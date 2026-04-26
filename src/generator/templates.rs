@@ -110,8 +110,14 @@ pub fn dockerfile(config: &Config) -> String {
         format!("\n{}", all_user_installs.join("\n\n"))
     };
 
+    let ubuntu_img = match config.languages.ubuntu_version() {
+        "ubuntu-22.04" => "ubuntu-22.04",
+        "ubuntu-20.04" => "ubuntu-20.04",
+        _ => "ubuntu-24.04",
+    };
+
     format!(
-        r#"FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+        r#"FROM mcr.microsoft.com/devcontainers/base:{}
 
 USER root
 
@@ -132,7 +138,7 @@ RUN chmod +x /usr/local/bin/init-firewall.sh && \
 USER vscode{}
 "#
         ,
-        apt_list, fd_symlink, user_section
+        ubuntu_img, apt_list, fd_symlink, user_section
     )
 }
 

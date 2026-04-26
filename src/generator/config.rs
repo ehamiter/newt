@@ -35,6 +35,8 @@ pub struct LanguageSet {
     pub go: bool,
     pub ruby: bool,
     pub java_jvm: bool,
+    /// Ubuntu version for devcontainer (default: 24.04)
+    pub ubuntu_version: Option<String>,
 }
 
 impl LanguageSet {
@@ -46,7 +48,13 @@ impl LanguageSet {
             go: labels.contains(&"Go"),
             ruby: labels.contains(&"Ruby"),
             java_jvm: labels.contains(&"Java / JVM"),
+            ubuntu_version: None,
         }
+    }
+
+    /// Get the Ubuntu version for the devcontainer.
+    pub fn ubuntu_version(&self) -> &str {
+        self.ubuntu_version.as_deref().unwrap_or("ubuntu-24.04")
     }
 
     /// Get all required apt packages for selected languages.
@@ -86,8 +94,9 @@ impl LanguageSet {
         }
 
         if self.go {
+            // Use latest stable Go version
             installs.push(UserInstall {
-                cmd: "curl -LO https://go.dev/dl/go1.23.4.linux-amd64.tar.gz\n    && sudo tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz\n    && rm go1.23.4.linux-amd64.tar.gz"
+                cmd: "GO_VERSION=$(curl -s https://go.dev/VERSION?m=text)\n    && curl -LO \"https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz\"\n    && sudo tar -C /usr/local -xzf ${GO_VERSION}.linux-amd64.tar.gz\n    && rm ${GO_VERSION}.linux-amd64.tar.gz"
                     .into(),
                 comment: "Go toolchain".into(),
             });
@@ -356,7 +365,7 @@ impl ExtraToolSet {
 
         if self.delta {
             installs.push(UserInstall {
-                cmd: "curl -LO https://github.com/dandavison/delta/releases/latest/download/git-delta_0.17.0_amd64.deb\n    && sudo dpkg -i git-delta_0.17.0_amd64.deb\n    && rm git-delta_0.17.0_amd64.deb"
+                cmd: "curl -fsSL https://github.com/dandavison/delta/releases/latest/download/git-delta_amd64.deb -o delta.deb\n    && sudo dpkg -i delta.deb || sudo apt install -f -y\n    && rm delta.deb"
                     .into(),
                 comment: "git-delta".into(),
             });
@@ -371,8 +380,9 @@ impl ExtraToolSet {
         }
 
         if self.watchexec {
+            // Use cargo-binstall for reliable binary installation
             installs.push(UserInstall {
-                cmd: "curl -LO https://github.com/watchexec/watchexec/releases/latest/download/watchexec-2.1.2-x86_64-unknown-linux-musl.tar.xz\n    && tar xf watchexec-*.tar.xz\n    && mv watchexec-*/watchexec /home/vscode/.local/bin/\n    && rm -rf watchexec-*"
+                cmd: "curl -L https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash\n    && cargo binstall watchexec-cli -y"
                     .into(),
                 comment: "watchexec file watcher".into(),
             });

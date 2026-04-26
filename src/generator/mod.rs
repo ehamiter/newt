@@ -59,6 +59,7 @@ mod tests {
                 go: false,
                 ruby: false,
                 java_jvm: false,
+                ubuntu_version: None,
             },
             databases: DatabaseSet {
                 postgresql: true,

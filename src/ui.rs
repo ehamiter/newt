@@ -10,8 +10,18 @@ use ratatui::{
 
 use crate::app::{App, Step};
 
+/// Minimum terminal size required.
+pub const MIN_WIDTH: u16 = 60;
+pub const MIN_HEIGHT: u16 = 15;
+
 pub fn render(f: &mut Frame, app: &App) {
     let area = f.area();
+
+    // Check if terminal is large enough
+    if area.width < MIN_WIDTH || area.height < MIN_HEIGHT {
+        render_too_small(f, area);
+        return;
+    }
 
     let chunks = Layout::default()
         .direction(Direction::Vertical)
@@ -33,9 +43,37 @@ pub fn render(f: &mut Frame, app: &App) {
     render_footer(f, app.step, chunks[2]);
 }
 
+/// Render message when terminal is too small.
+fn render_too_small(f: &mut Frame, area: Rect) {
+    let message = "Terminal too small. Please resize.";
+    let para = Paragraph::new(message)
+        .block(Block::default()
+            .borders(Borders::ALL)
+            .title(" Error ")
+            .style(Style::default().fg(Color::Red)))
+        .alignment(Alignment::Center)
+        .wrap(Wrap { trim: true });
+    f.render_widget(para, area);
+}
+
 fn render_header(f: &mut Frame, app: &App, area: Rect) {
+    // Progress bar showing steps
+    let progress = (0..Step::TOTAL)
+        .map(|i| {
+            let step_num = i + 1;
+            if step_num < app.step.number() {
+                "●"  // Completed
+            } else if step_num == app.step.number() {
+                "○"  // Current
+            } else {
+                "·"  // Pending
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ");
+
     let title = format!(
-        " newt — {} — Step {}/{} ",
+        " newt — {} — {}/{} ",
         app.project_name,
         app.step.number(),
         Step::TOTAL
@@ -46,11 +84,25 @@ fn render_header(f: &mut Frame, app: &App, area: Rect) {
         .borders(Borders::ALL)
         .style(Style::default().fg(Color::Cyan));
 
+    // Create layout with progress indicator
+    let chunks = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([
+            Constraint::Min(40),
+            Constraint::Length(15),
+        ])
+        .split(area);
+
     let para = Paragraph::new(app.step.prompt())
         .block(block)
         .style(Style::default().fg(Color::White));
+    f.render_widget(para, chunks[0]);
 
-    f.render_widget(para, area);
+    // Progress indicator
+    let progress_para = Paragraph::new(progress)
+        .style(Style::default().fg(Color::DarkGray))
+        .alignment(Alignment::Center);
+    f.render_widget(progress_para, chunks[1]);
 }
 
 fn render_checklist(f: &mut Frame, app: &App, area: Rect) {
@@ -160,15 +212,21 @@ fn add_section(lines: &mut Vec<Line<'static>>, label: &'static str, items: &[&'s
 }
 
 fn render_footer(f: &mut Frame, step: Step, area: Rect) {
-    let hint = if step == Step::Summary {
-        "  [Enter/y] Create project   [n/Esc] Cancel   [←/b] Back  "
+    let (hint, style) = if step == Step::Summary {
+        (
+            " [Enter/y] Create   [n/Esc] Cancel   [←/b] Back ",
+            Style::default().fg(Color::Green),
+        )
     } else {
-        "  [↑↓/jk] Move   [Space] Toggle   [Enter/→] Next   [←/b/Esc] Back   [q/Ctrl+C] Quit  "
+        (
+            " [↑↓/jk] Move   [Space] Toggle   [a] Select All   [A] Deselect All   [Enter/→] Next   [←/b/Esc] Back   [q/Ctrl+C] Quit ",
+            Style::default().fg(Color::DarkGray),
+        )
     };
 
     let para = Paragraph::new(hint)
         .block(Block::default().borders(Borders::ALL))
-        .style(Style::default().fg(Color::DarkGray))
+        .style(style)
         .alignment(Alignment::Center);
 
     f.render_widget(para, area);

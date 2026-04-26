@@ -29,7 +29,7 @@ All generated files are scoped to exactly what you selected — nothing more.
 |------|-------------|
 | 1 | Languages & runtimes (Rust, Python, Node.js/Bun, Go, Ruby, Java) |
 | 2 | Databases (PostgreSQL, MySQL, SQLite, Redis, MongoDB) |
-| 3 | AI coding tools (Claude Code, GitHub Copilot, OpenCode) |
+| 3 | AI coding tools (Claude Code, GitHub Copilot, OpenCode, pi) |
 | 4 | Extra CLI tools (ripgrep, fd, jq, bat, delta, htop, …) |
 | 5 | Gitignore patterns |
 | 6 | Summary — review and confirm |
@@ -40,6 +40,9 @@ All generated files are scoped to exactly what you selected — nothing more.
 |-----|--------|
 | `↑` / `↓` or `k` / `j` | Move cursor |
 | `Space` | Toggle selection |
+| `a` | Select all items in current step |
+| `A` | Deselect all items in current step |
+| `Home` / `End` | Jump to first/last item |
 | `Enter` / `→` | Next step |
 | `←` / `b` / `Esc` | Previous step |
 | `q` / `Ctrl+C` | Quit |
@@ -69,3 +72,59 @@ newt <project-name>
 ```
 
 Opens the wizard in your terminal. On confirmation, the project directory and all files are written to your current working directory.
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `-o, --output <DIR>` | Output directory (default: current directory) |
+| `-v, --version` | Print version information |
+| `-h, --help` | Print help information |
+
+### Examples
+
+```bash
+# Create a new project in the current directory
+newt my-project
+
+# Create a project in a specific directory
+newt my-project -o ~/projects
+
+# Print version
+newt --version
+```
+
+## Features
+
+- **Modern terminal UI** — Built with [ratatui](https://ratatui.rs/) for a smooth experience
+- **Smart firewall** — Outbound firewall restricts traffic to known domains only
+- **Multiple languages** — Support for Rust, Python, Node.js/Bun, Go, Ruby, Java
+- **Database support** — PostgreSQL, MySQL, SQLite, Redis, MongoDB
+- **AI tool integration** — Claude Code, GitHub Copilot, OpenCode, pi
+- **Useful CLI tools** — ripgrep, fd, jq, bat, delta, htop, httpie, just, watchexec
+- **Smart defaults** — Pre-selects commonly used tools for convenience
+
+## Project Structure
+
+```
+newt/
+├── src/
+│   ├── main.rs           # Entry point and CLI
+│   ├── app/              # Wizard state and logic
+│   │   ├── mod.rs
+│   │   ├── state.rs      # App state
+│   │   ├── types.rs      # Type definitions
+│   │   └── wizard.rs     # Event loop
+│   ├── generator/        # File generation
+│   │   ├── mod.rs
+│   │   ├── config.rs     # Configuration types
+│   │   └── templates.rs  # Template rendering
+│   └── ui.rs             # Terminal UI rendering
+├── Cargo.toml
+├── install.sh
+└── README.md
+```
+
+## License
+
+MIT
