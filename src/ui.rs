@@ -1,3 +1,5 @@
+//! Terminal UI rendering.
+
 use ratatui::{
     layout::{Alignment, Constraint, Direction, Layout, Rect},
     style::{Color, Modifier, Style},
