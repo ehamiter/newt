@@ -26,6 +26,7 @@ impl App {
                 SelectItem::new("Go", "golang"),
                 SelectItem::new("Ruby", "rbenv"),
                 SelectItem::new("Java / JVM", "default-jdk + maven"),
+                SelectItem::new("Swift", "swiftly toolchain (linux)"),
             ]),
             databases: SelectList::new(vec![
                 SelectItem::new("PostgreSQL", "libpq + psql client"),

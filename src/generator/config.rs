@@ -35,6 +35,7 @@ pub struct LanguageSet {
     pub go: bool,
     pub ruby: bool,
     pub java_jvm: bool,
+    pub swift: bool,
     /// Ubuntu version for devcontainer (default: 24.04)
     pub ubuntu_version: Option<String>,
 }
@@ -48,6 +49,7 @@ impl LanguageSet {
             go: labels.contains(&"Go"),
             ruby: labels.contains(&"Ruby"),
             java_jvm: labels.contains(&"Java / JVM"),
+            swift: labels.contains(&"Swift"),
             ubuntu_version: None,
         }
     }
@@ -62,6 +64,17 @@ impl LanguageSet {
         let mut packages = Vec::new();
         if self.java_jvm {
             packages.extend(["default-jdk", "maven"]);
+        }
+        if self.swift {
+            packages.extend([
+                "binutils-gold",
+                "libcurl4-openssl-dev",
+                "libicu-dev",
+                "libncurses-dev",
+                "libsqlite3-dev",
+                "libxml2-dev",
+                "uuid-dev",
+            ]);
         }
         packages
     }
@@ -110,6 +123,14 @@ impl LanguageSet {
             });
         }
 
+        if self.swift {
+            installs.push(UserInstall {
+                cmd: "curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash -s -- -y\n    && . ~/.swiftly/env\n    && swiftly install latest"
+                    .into(),
+                comment: "Swift via swiftly".into(),
+            });
+        }
+
         installs
     }
 
@@ -131,6 +152,12 @@ impl LanguageSet {
         if self.node_bun {
             domains.extend(["registry.npmjs.org", "bun.sh"]);
         }
+        if self.swift {
+            domains.extend([
+                "download.swift.org",
+                "swiftlang.github.io",
+            ]);
+        }
         domains.sort_unstable();
         domains.dedup();
         domains
@@ -139,7 +166,7 @@ impl LanguageSet {
     /// Check if bashrc needs PATH modifications.
     #[allow(dead_code)]
     pub fn needs_bashrc_extras(&self) -> bool {
-        self.rust || self.go || self.ruby
+        self.rust || self.go || self.ruby || self.swift
     }
 }
 
@@ -468,6 +495,11 @@ impl GitignoreSet {
         if langs.go {
             entries.push("*.exe".into());
             entries.push("*.test".into());
+        }
+        if langs.swift {
+            entries.push(".build/".into());
+            entries.push("*.o".into());
+            entries.push("*.d".into());
         }
         if self.build {
             entries.push("dist/".into());

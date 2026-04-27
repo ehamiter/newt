@@ -331,6 +331,12 @@ pub fn bashrc(config: &Config) -> String {
         lines.push(r#"eval "$(rbenv init -)""#.into());
     }
 
+    // Swift via swiftly
+    if config.languages.swift {
+        lines.push(String::new());
+        lines.push(r#"[ -f "$HOME/.swiftly/env" ] && source "$HOME/.swiftly/env""#.into());
+    }
+
     // Timezone
     lines.push(String::new());
     lines.push("export TZ='America/Chicago'".into());
