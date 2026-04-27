@@ -148,8 +148,20 @@ pub fn install_ai_tools(config: &Config) -> String {
 
     if installs.is_empty() {
         return r#"#!/bin/bash
+set -e
+
 # No AI tools selected
-echo "No AI tools to install"
+
+# dcg - destructive command guard
+if ! command -v dcg &>/dev/null; then
+    echo "[dcg] installing..."
+    curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/destructive_command_guard/main/install.sh?$(date +%s)" | bash -s -- --easy-mode
+    echo "[dcg] done"
+else
+    echo "[dcg] already installed, skipping"
+fi
+
+echo "Tools ready"
 "#
         .into();
     }
@@ -186,6 +198,15 @@ install_if_missing() {{
 }}
 
 {}
+
+# dcg - destructive command guard
+if ! command -v dcg &>/dev/null; then
+    echo "[dcg] installing..."
+    curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/destructive_command_guard/main/install.sh?$(date +%s)" | bash -s -- --easy-mode
+    echo "[dcg] done"
+else
+    echo "[dcg] already installed, skipping"
+fi
 
 echo "AI tools ready"
 "#
