@@ -125,7 +125,7 @@ impl LanguageSet {
 
         if self.swift {
             installs.push(UserInstall {
-                cmd: "curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz \\\n    && tar zxf swiftly-$(uname -m).tar.gz \\\n && ./swiftly init --quiet-shell-followup \\\n    && . \"${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh\" \\\n    && swiftly install latest"
+                cmd: "cd /tmp && curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz \\\n    && tar zxf swiftly-$(uname -m).tar.gz \\\n    && ./swiftly init --quiet-shell-followup \\\n    && $HOME/.local/share/swiftly/bin/swiftly install latest"
                     .into(),
                 comment: "Swift via swiftly".into(),
             });
