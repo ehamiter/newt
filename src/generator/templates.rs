@@ -146,14 +146,6 @@ USER vscode{}
 pub fn install_ai_tools(config: &Config) -> String {
     let installs: Vec<AiInstall> = config.ai_tools.install_commands();
 
-    if installs.is_empty() {
-        return r#"#!/bin/bash
-# No AI tools selected
-echo "No AI tools to install"
-"#
-        .into();
-    }
-
     let install_blocks: Vec<String> = installs
         .into_iter()
         .map(|i| {
@@ -165,7 +157,18 @@ echo "No AI tools to install"
         })
         .collect();
 
-    let installs_str = install_blocks.join("\n\n");
+    let installs_str = if install_blocks.is_empty() {
+        String::new()
+    } else {
+        format!("{}\n\n", install_blocks.join("\n\n"))
+    };
+
+    let agents = config.ai_tools.skills_agents();
+    let agents_flag = if agents.is_empty() {
+        String::new()
+    } else {
+        format!(" -a {}", agents.join(" "))
+    };
 
     format!(
         r#"#!/bin/bash
@@ -185,12 +188,13 @@ install_if_missing() {{
     fi
 }}
 
-{}
+{}echo "[evanflow] installing skills..."
+npx skills@latest add evanklem/evanflow -s '*'{} -y
+echo "[evanflow] done"
 
 echo "AI tools ready"
-"#
-        ,
-        installs_str
+"#,
+        installs_str, agents_flag
     )
 }
 

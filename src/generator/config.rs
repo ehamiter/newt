@@ -286,6 +286,24 @@ impl AiToolSet {
         installs
     }
 
+    /// Get agent identifiers for the skills CLI `-a` flag.
+    pub fn skills_agents(&self) -> Vec<&'static str> {
+        let mut agents = Vec::new();
+        if self.claude_code {
+            agents.push("claude-code");
+        }
+        if self.copilot {
+            agents.push("github-copilot");
+        }
+        if self.opencode {
+            agents.push("opencode");
+        }
+        if self.pi {
+            agents.push("pi");
+        }
+        agents
+    }
+
     /// Get required domains for firewall configuration.
     pub fn domains(&self) -> Vec<&'static str> {
         let mut domains = Vec::new();
@@ -328,6 +346,7 @@ pub struct AiInstall {
 pub struct ExtraToolSet {
     pub ripgrep: bool,
     pub fd_find: bool,
+    #[allow(dead_code)]
     pub jq: bool,
     pub trash_cli: bool,
     pub bat: bool,
@@ -354,15 +373,12 @@ impl ExtraToolSet {
 
     /// Get apt packages needed.
     pub fn apt_packages(&self) -> Vec<&'static str> {
-        let mut packages = Vec::new();
+        let mut packages = vec!["jq"];
         if self.ripgrep {
             packages.push("ripgrep");
         }
         if self.fd_find {
             packages.push("fd-find");
-        }
-        if self.jq {
-            packages.push("jq");
         }
         if self.trash_cli {
             packages.push("trash-cli");
