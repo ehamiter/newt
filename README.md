@@ -25,14 +25,14 @@ All generated files are scoped to exactly what you selected — nothing more.
 
 ## Wizard steps
 
-| Step | What it asks |
-|------|-------------|
-| 1 | Languages & runtimes (Rust, Python, Node.js/Bun, Go, Ruby, Java) |
-| 2 | Databases (PostgreSQL, MySQL, SQLite, Redis, MongoDB) |
-| 3 | AI coding tools (Claude Code, GitHub Copilot, OpenCode, pi) |
-| 4 | Extra CLI tools (ripgrep, fd, jq, bat, delta, htop, …) |
-| 5 | Gitignore patterns |
-| 6 | Summary — review and confirm |
+| Step | What it asks | Pre-selected |
+|------|-------------|--------------|
+| 1 | Languages & runtimes (Swift, Rust, Python, Node.js/Bun, Go, Ruby, Java/JVM) | — |
+| 2 | Databases (PostgreSQL, MySQL/MariaDB, SQLite, Redis, MongoDB) | — |
+| 3 | AI coding tools (Claude Code, pi, GitHub Copilot, OpenCode) | Claude Code |
+| 4 | Extra CLI tools (ripgrep, fd-find, jq, trash-cli, bat, htop, httpie, just, watchexec) | ripgrep, fd-find, jq, trash-cli, bat |
+| 5 | Gitignore patterns | .env, .env.local, *.log, .DS_Store, temp files, dist//build/ |
+| 6 | Summary — review and confirm | — |
 
 ## Keys
 
@@ -98,10 +98,10 @@ newt --version
 
 - **Modern terminal UI** — Built with [ratatui](https://ratatui.rs/) for a smooth experience
 - **Smart firewall** — Outbound firewall restricts traffic to known domains only
-- **Multiple languages** — Support for Rust, Python, Node.js/Bun, Go, Ruby, Java
-- **Database support** — PostgreSQL, MySQL, SQLite, Redis, MongoDB
-- **AI tool integration** — Claude Code, GitHub Copilot, OpenCode, pi
-- **Useful CLI tools** — ripgrep, fd, jq, bat, delta, htop, httpie, just, watchexec
+- **Multiple languages** — Swift, Rust, Python, Node.js/Bun, Go, Ruby, Java/JVM
+- **Database support** — PostgreSQL, MySQL/MariaDB, SQLite, Redis, MongoDB
+- **AI tool integration** — Claude Code, pi, GitHub Copilot, OpenCode
+- **Useful CLI tools** — ripgrep, fd-find, jq, trash-cli, bat, htop, httpie, just, watchexec
 - **Smart defaults** — Pre-selects commonly used tools for convenience
 
 ## Project Structure
