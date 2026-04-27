@@ -88,7 +88,7 @@ pub fn dockerfile(config: &Config) -> String {
 
     // fd symlink if needed
     let fd_symlink = if config.extra_tools.needs_fd_symlink() {
-        "\n    && ln -s $(which fdfind) /usr/local/bin/fd"
+        " \\\n    && ln -s $(which fdfind) /usr/local/bin/fd"
     } else {
         ""
     };

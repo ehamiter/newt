@@ -93,7 +93,7 @@ impl LanguageSet {
 
         if self.python {
             installs.push(UserInstall {
-                cmd: "curl -LsSf https://astral.sh/uv/install.sh | sh\n    && /home/vscode/.local/bin/uv python install 3.13"
+                cmd: "curl -LsSf https://astral.sh/uv/install.sh | sh \\\n    && /home/vscode/.local/bin/uv python install 3.13"
                     .into(),
                 comment: "Python via uv".into(),
             });
@@ -109,7 +109,7 @@ impl LanguageSet {
         if self.go {
             // Use latest stable Go version
             installs.push(UserInstall {
-                cmd: "GO_VERSION=$(curl -s https://go.dev/VERSION?m=text)\n    && curl -LO \"https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz\"\n    && sudo tar -C /usr/local -xzf ${GO_VERSION}.linux-amd64.tar.gz\n    && rm ${GO_VERSION}.linux-amd64.tar.gz"
+                cmd: "GO_VERSION=$(curl -s https://go.dev/VERSION?m=text) \\\n    && curl -LO \"https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz\" \\\n    && sudo tar -C /usr/local -xzf ${GO_VERSION}.linux-amd64.tar.gz \\\n    && rm ${GO_VERSION}.linux-amd64.tar.gz"
                     .into(),
                 comment: "Go toolchain".into(),
             });
@@ -117,7 +117,7 @@ impl LanguageSet {
 
         if self.ruby {
             installs.push(UserInstall {
-                cmd: "curl -fsSL https://rbenv.org/install.sh | bash\n    && rbenv install 3.3.0\n    && rbenv global 3.3.0"
+                cmd: "curl -fsSL https://rbenv.org/install.sh | bash \\\n    && rbenv install 3.3.0 \\\n    && rbenv global 3.3.0"
                     .into(),
                 comment: "Ruby via rbenv".into(),
             });
@@ -125,7 +125,7 @@ impl LanguageSet {
 
         if self.swift {
             installs.push(UserInstall {
-                cmd: "curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash -s -- -y\n    && . ~/.swiftly/env\n    && swiftly install latest"
+                cmd: "curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash -s -- -y \\\n    && . ~/.swiftly/env \\\n    && swiftly install latest"
                     .into(),
                 comment: "Swift via swiftly".into(),
             });
@@ -392,7 +392,7 @@ impl ExtraToolSet {
 
         if self.delta {
             installs.push(UserInstall {
-                cmd: "curl -fsSL https://github.com/dandavison/delta/releases/latest/download/git-delta_amd64.deb -o delta.deb\n    && sudo dpkg -i delta.deb || sudo apt install -f -y\n    && rm delta.deb"
+                cmd: "curl -fsSL https://github.com/dandavison/delta/releases/latest/download/git-delta_amd64.deb -o delta.deb \\\n    && sudo dpkg -i delta.deb || sudo apt install -f -y \\\n    && rm delta.deb"
                     .into(),
                 comment: "git-delta".into(),
             });
@@ -409,7 +409,7 @@ impl ExtraToolSet {
         if self.watchexec {
             // Use cargo-binstall for reliable binary installation
             installs.push(UserInstall {
-                cmd: "curl -L https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash\n    && cargo binstall watchexec-cli -y"
+                cmd: "curl -L https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \\\n    && cargo binstall watchexec-cli -y"
                     .into(),
                 comment: "watchexec file watcher".into(),
             });
