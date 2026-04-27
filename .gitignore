@@ -1,2 +1,14 @@
+*.log
+*.swp
+*.tmp
+*~
+.DS_Store
+._*
+.env
+.env.*.local
+.env.local
+build/
+dist/
+logs/
 target/
 .devcontainer/
