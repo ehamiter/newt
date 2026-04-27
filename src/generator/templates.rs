@@ -334,7 +334,7 @@ pub fn bashrc(config: &Config) -> String {
     // Swift via swiftly
     if config.languages.swift {
         lines.push(String::new());
-        lines.push(r#"[ -f "$HOME/.swiftly/env" ] && source "$HOME/.swiftly/env""#.into());
+        lines.push(r#"[ -f "$HOME/.local/share/swiftly/env.sh" ] && source "$HOME/.local/share/swiftly/env.sh""#.into());
     }
 
     // Timezone

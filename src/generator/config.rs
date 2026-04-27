@@ -125,7 +125,7 @@ impl LanguageSet {
 
         if self.swift {
             installs.push(UserInstall {
-                cmd: "curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash -s -- -y \\\n    && . ~/.swiftly/env \\\n    && swiftly install latest"
+                cmd: "curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz \\\n    && tar zxf swiftly-$(uname -m).tar.gz \\\n && ./swiftly init --quiet-shell-followup \\\n    && . \"${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh\" \\\n    && swiftly install latest"
                     .into(),
                 comment: "Swift via swiftly".into(),
             });
@@ -155,7 +155,7 @@ impl LanguageSet {
         if self.swift {
             domains.extend([
                 "download.swift.org",
-                "swiftlang.github.io",
+                "github.com",
             ]);
         }
         domains.sort_unstable();
