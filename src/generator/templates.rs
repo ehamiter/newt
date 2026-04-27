@@ -113,7 +113,7 @@ pub fn dockerfile(config: &Config) -> String {
     let ubuntu_img = match config.languages.ubuntu_version() {
         "ubuntu-22.04" => "ubuntu-22.04",
         "ubuntu-20.04" => "ubuntu-20.04",
-        _ => "ubuntu-24.04",
+        _ => "ubuntu-22.04",
     };
 
     format!(

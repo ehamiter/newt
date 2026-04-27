@@ -56,7 +56,7 @@ impl LanguageSet {
 
     /// Get the Ubuntu version for the devcontainer.
     pub fn ubuntu_version(&self) -> &str {
-        self.ubuntu_version.as_deref().unwrap_or("ubuntu-24.04")
+        self.ubuntu_version.as_deref().unwrap_or("ubuntu-22.04")
     }
 
     /// Get all required apt packages for selected languages.
