@@ -331,7 +331,6 @@ pub struct ExtraToolSet {
     pub jq: bool,
     pub trash_cli: bool,
     pub bat: bool,
-    pub delta: bool,
     pub htop: bool,
     pub httpie: bool,
     pub just: bool,
@@ -346,7 +345,6 @@ impl ExtraToolSet {
             jq: labels.contains(&"jq"),
             trash_cli: labels.contains(&"trash-cli"),
             bat: labels.contains(&"bat"),
-            delta: labels.contains(&"delta"),
             htop: labels.contains(&"htop"),
             httpie: labels.contains(&"httpie"),
             just: labels.contains(&"just"),
@@ -389,14 +387,6 @@ impl ExtraToolSet {
     /// Get user-level installs (non-apt tools).
     pub fn user_installs(&self) -> Vec<UserInstall> {
         let mut installs = Vec::new();
-
-        if self.delta {
-            installs.push(UserInstall {
-                cmd: "curl -fsSL https://github.com/dandavison/delta/releases/latest/download/git-delta_amd64.deb -o delta.deb \\\n    && sudo dpkg -i delta.deb || sudo apt install -f -y \\\n    && rm delta.deb"
-                    .into(),
-                comment: "git-delta".into(),
-            });
-        }
 
         if self.just {
             installs.push(UserInstall {

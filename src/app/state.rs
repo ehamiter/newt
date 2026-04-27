@@ -47,7 +47,6 @@ impl App {
                 SelectItem::new("jq", "JSON processor").on(),
                 SelectItem::new("trash-cli", "safe delete").on(),
                 SelectItem::new("bat", "syntax-highlighted cat"),
-                SelectItem::new("delta", "pretty git diffs"),
                 SelectItem::new("htop", "process viewer"),
                 SelectItem::new("httpie", "HTTP client"),
                 SelectItem::new("just", "command runner"),
