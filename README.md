@@ -8,6 +8,10 @@ newt foobar
 
 Walks you through 5 checklist screens and writes a lean, fully configured devcontainer to `foobar/`.
 
+<p align="center">
+  <img src="newt.png" alt="newt wizard screenshot" width="600">
+</p>
+
 ## What it generates
 
 ```
