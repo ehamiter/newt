@@ -53,7 +53,7 @@ If `.devcontainer/` or `.gitignore` already exist, you'll be prompted before any
 ## Install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/ehamiter/newt
 cd newt
 ./install.sh                  # installs to ~/.local/bin
 ./install.sh /usr/local/bin   # or a custom path
