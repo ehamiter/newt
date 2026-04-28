@@ -40,7 +40,7 @@ ui.rs            → ratatui rendering (called from wizard event loop)
 | Languages | Swift, Rust, Python, Node.js/Bun, Go, Ruby, Java/JVM | — |
 | Databases | PostgreSQL, MySQL/MariaDB, SQLite, Redis, MongoDB | — |
 | AI Tools | Claude Code, pi, GitHub Copilot, OpenCode | Claude Code |
-| Extra CLI | ripgrep, fd-find, jq, trash-cli, bat, htop, httpie, just, watchexec | ripgrep, fd-find, jq, trash-cli, bat |
+| Extra CLI | ripgrep, fd-find, jq, bat, htop, httpie, just, watchexec | ripgrep, fd-find, jq, bat |
 | Gitignore | .env, .env.local, *.log, .DS_Store, *.tmp/*.swp, dist//build/, target/, node_modules/, .venv//venv/, __pycache__//*.pyc, .idea//.vscode/ | first six |
 
 ## How to add a new language or tool
