@@ -135,6 +135,9 @@ RUN chmod +x /usr/local/bin/init-firewall.sh && \
   echo "vscode ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/vscode-firewall && \
   chmod 0440 /etc/sudoers.d/vscode-firewall
 
+COPY bashrc.sh /usr/local/bin/devcontainer-bashrc.sh
+RUN echo "source /usr/local/bin/devcontainer-bashrc.sh" >> /home/vscode/.bashrc
+
 USER vscode{}
 "#
         ,
