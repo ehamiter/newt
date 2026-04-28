@@ -348,7 +348,7 @@ pub struct ExtraToolSet {
     pub fd_find: bool,
     #[allow(dead_code)]
     pub jq: bool,
-    pub trash_cli: bool,
+
     pub bat: bool,
     pub htop: bool,
     pub httpie: bool,
@@ -362,7 +362,7 @@ impl ExtraToolSet {
             ripgrep: labels.contains(&"ripgrep"),
             fd_find: labels.contains(&"fd-find"),
             jq: labels.contains(&"jq"),
-            trash_cli: labels.contains(&"trash-cli"),
+
             bat: labels.contains(&"bat"),
             htop: labels.contains(&"htop"),
             httpie: labels.contains(&"httpie"),
@@ -380,9 +380,7 @@ impl ExtraToolSet {
         if self.fd_find {
             packages.push("fd-find");
         }
-        if self.trash_cli {
-            packages.push("trash-cli");
-        }
+
         if self.bat {
             packages.push("bat");
         }

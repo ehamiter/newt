@@ -28,7 +28,7 @@ foobar/
 | Languages | Swift, Rust, Python, Node.js/Bun, Go, Ruby, Java/JVM | — |
 | Databases | PostgreSQL, MySQL/MariaDB, SQLite, Redis, MongoDB | — |
 | AI tools | Claude Code, pi, GitHub Copilot, OpenCode | Claude Code |
-| Extra CLI | ripgrep, fd-find, jq, trash-cli, bat, htop, httpie, just, watchexec | first five |
+| Extra CLI | ripgrep, fd-find, jq, bat, htop, httpie, just, watchexec | first four |
 | Gitignore | .env, .env.local, *.log, .DS_Store, temp files, dist/build/ | first six |
 
 Selecting a language auto-selects its relevant gitignore patterns (e.g. Rust → `target/`, Python → `.venv/`, Node → `node_modules/`).

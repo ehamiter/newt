@@ -45,7 +45,7 @@ impl App {
                 SelectItem::new("ripgrep", "fast grep").on(),
                 SelectItem::new("fd-find", "fast find").on(),
                 SelectItem::new("jq", "JSON processor").on(),
-                SelectItem::new("trash-cli", "safe delete").on(),
+
                 SelectItem::new("bat", "syntax-highlighted cat").on(),
                 SelectItem::new("htop", "process viewer"),
                 SelectItem::new("httpie", "HTTP client"),
