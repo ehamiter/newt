@@ -40,8 +40,8 @@ fn validate_project_name(name: &str) -> Result<(), String> {
     Ok(())
 }
 
-fn confirm_overwrite() -> bool {
-    print!(".devcontainer/ already exists. Overwrite it? [y/N]: ");
+fn confirm_overwrite(subject: &str) -> bool {
+    print!("{} already exists. Overwrite it? [y/N]: ", subject);
     io::stdout().flush().ok();
     let mut input = String::new();
     io::stdin().read_line(&mut input).ok();
@@ -77,11 +77,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let dc_path = project_path.join(".devcontainer");
     if dc_path.exists() {
-        if !confirm_overwrite() {
+        if !confirm_overwrite(".devcontainer/") {
             println!("Aborted.");
             return Ok(());
         }
         std::fs::remove_dir_all(&dc_path)?;
+    }
+
+    let gi_path = project_path.join(".gitignore");
+    if gi_path.exists() && !confirm_overwrite(".gitignore") {
+        println!("Aborted.");
+        return Ok(());
     }
 
     match app::run_wizard(&project_name)? {

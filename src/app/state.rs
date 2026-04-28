@@ -80,6 +80,25 @@ impl App {
         }
     }
 
+    /// Auto-select gitignore patterns based on selected languages. Additive only.
+    pub fn apply_language_gitignore_defaults(&mut self) {
+        let selected: Vec<&str> = self.languages.selected_labels();
+        let mappings: &[(&str, &[&str])] = &[
+            ("Rust", &["target/"]),
+            ("Python", &[".venv/ / venv/", "__pycache__/ / *.pyc"]),
+            ("Node.js / Bun", &["node_modules/", "dist/ / build/"]),
+        ];
+        for (lang, patterns) in mappings {
+            if selected.contains(lang) {
+                for pattern in *patterns {
+                    if let Some(item) = self.gitignore.items.iter_mut().find(|i| i.label == *pattern) {
+                        item.selected = true;
+                    }
+                }
+            }
+        }
+    }
+
     /// Collect all answers into a final configuration.
     pub fn answers(&self) -> Answers {
         Answers {
@@ -90,5 +109,56 @@ impl App {
             extra_tools: self.extra_tools.selected_labels(),
             gitignore: self.gitignore.selected_labels(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn select_language(app: &mut App, label: &str) {
+        if let Some(item) = app.languages.items.iter_mut().find(|i| i.label == label) {
+            item.selected = true;
+        }
+    }
+
+    fn gitignore_selected(app: &App, label: &str) -> bool {
+        app.gitignore.items.iter().any(|i| i.label == label && i.selected)
+    }
+
+    #[test]
+    fn test_rust_autoselects_target() {
+        let mut app = App::new("test".into());
+        select_language(&mut app, "Rust");
+        app.apply_language_gitignore_defaults();
+        assert!(gitignore_selected(&app, "target/"));
+    }
+
+    #[test]
+    fn test_python_autoselects_venv_and_pycache() {
+        let mut app = App::new("test".into());
+        select_language(&mut app, "Python");
+        app.apply_language_gitignore_defaults();
+        assert!(gitignore_selected(&app, ".venv/ / venv/"));
+        assert!(gitignore_selected(&app, "__pycache__/ / *.pyc"));
+    }
+
+    #[test]
+    fn test_node_autoselects_node_modules_and_dist() {
+        let mut app = App::new("test".into());
+        select_language(&mut app, "Node.js / Bun");
+        app.apply_language_gitignore_defaults();
+        assert!(gitignore_selected(&app, "node_modules/"));
+        assert!(gitignore_selected(&app, "dist/ / build/"));
+    }
+
+    #[test]
+    fn test_no_languages_leaves_language_specific_items_unselected() {
+        let mut app = App::new("test".into());
+        app.apply_language_gitignore_defaults();
+        assert!(!gitignore_selected(&app, "target/"));
+        assert!(!gitignore_selected(&app, ".venv/ / venv/"));
+        assert!(!gitignore_selected(&app, "__pycache__/ / *.pyc"));
+        assert!(!gitignore_selected(&app, "node_modules/"));
     }
 }

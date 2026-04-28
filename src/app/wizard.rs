@@ -98,6 +98,9 @@ fn event_loop(
                                 }
                             }
                             KeyCode::Enter | KeyCode::Right => {
+                                if app.step == Step::Languages {
+                                    app.apply_language_gitignore_defaults();
+                                }
                                 if let Some(next) = app.step.next() {
                                     app.step = next;
                                 } else {
