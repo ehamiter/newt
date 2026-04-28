@@ -51,8 +51,8 @@ If `.devcontainer/` or `.gitignore` already exist, you'll be prompted before any
 ```bash
 git clone <repo-url>
 cd newt
-./install.sh          # installs to ~/.local/bin
-./install.sh /usr/local/bin  # or a custom path
+./install.sh                  # installs to ~/.local/bin
+./install.sh /usr/local/bin   # or a custom path
 ```
 
 Requires [Rust](https://rustup.rs) 1.70+.
