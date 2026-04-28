@@ -13,8 +13,8 @@ Walks you through 5 checklist screens and writes a lean, fully configured devcon
 ```
 foobar/
 ├── .devcontainer/
-│   ├── devcontainer.json      # VS Code devcontainer config
-│   ├── Dockerfile             # Ubuntu base + your chosen tools
+│   ├── devcontainer.json     # VS Code devcontainer config
+│   ├── Dockerfile            # Ubuntu base + your chosen tools
 │   ├── install-ai-tools.sh   # AI coding tool installer
 │   ├── init-firewall.sh      # Allowlist-based outbound firewall
 │   └── bashrc.sh             # Shell aliases and environment
