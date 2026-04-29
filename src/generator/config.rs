@@ -301,24 +301,6 @@ impl AiToolSet {
         installs
     }
 
-    /// Get agent identifiers for the skills CLI `-a` flag.
-    pub fn skills_agents(&self) -> Vec<&'static str> {
-        let mut agents = Vec::new();
-        if self.claude_code {
-            agents.push("claude-code");
-        }
-        if self.copilot {
-            agents.push("github-copilot");
-        }
-        if self.opencode {
-            agents.push("opencode");
-        }
-        if self.pi {
-            agents.push("pi");
-        }
-        agents
-    }
-
     /// Get required domains for firewall configuration.
     pub fn domains(&self) -> Vec<&'static str> {
         let mut domains = Vec::new();

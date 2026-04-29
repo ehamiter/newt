@@ -166,13 +166,6 @@ pub fn install_ai_tools(config: &Config) -> String {
         format!("{}\n\n", install_blocks.join("\n\n"))
     };
 
-    let agents = config.ai_tools.skills_agents();
-    let agents_flag = if agents.is_empty() {
-        String::new()
-    } else {
-        format!(" -a {}", agents.join(" "))
-    };
-
     format!(
         r#"#!/bin/bash
 set -e
@@ -192,12 +185,14 @@ install_if_missing() {{
 }}
 
 {}echo "[evanflow] installing skills..."
-npx skills@latest add evanklem/evanflow -s '*'{} -y
+claude plugin marketplace add evanklem/evanflow 2>/dev/null || \
+  claude plugin marketplace update evanflow
+claude plugin install evanflow@evanflow 2>/dev/null || true
 echo "[evanflow] done"
 
 echo "AI tools ready"
 "#,
-        installs_str, agents_flag
+        installs_str
     )
 }
 
