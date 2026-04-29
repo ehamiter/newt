@@ -36,6 +36,7 @@ pub struct LanguageSet {
     pub ruby: bool,
     pub java_jvm: bool,
     pub swift: bool,
+    pub nim: bool,
     /// Ubuntu version for devcontainer (default: 24.04)
     pub ubuntu_version: Option<String>,
 }
@@ -50,6 +51,7 @@ impl LanguageSet {
             ruby: labels.contains(&"Ruby"),
             java_jvm: labels.contains(&"Java / JVM"),
             swift: labels.contains(&"Swift"),
+            nim: labels.contains(&"Nim"),
             ubuntu_version: None,
         }
     }
@@ -131,6 +133,13 @@ impl LanguageSet {
             });
         }
 
+        if self.nim {
+            installs.push(UserInstall {
+                cmd: "curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y".into(),
+                comment: "Nim via choosenim".into(),
+            });
+        }
+
         installs
     }
 
@@ -155,6 +164,12 @@ impl LanguageSet {
         if self.swift {
             domains.extend([
                 "download.swift.org",
+                "github.com",
+            ]);
+        }
+        if self.nim {
+            domains.extend([
+                "nim-lang.org",
                 "github.com",
             ]);
         }
@@ -437,6 +452,7 @@ pub struct GitignoreSet {
     pub pycache: bool,
     pub build: bool,
     pub ide: bool,
+    pub nimcache: bool,
 }
 
 impl GitignoreSet {
@@ -453,6 +469,7 @@ impl GitignoreSet {
             pycache: labels.contains(&"__pycache__/ / *.pyc"),
             build: labels.contains(&"dist/ / build/"),
             ide: labels.contains(&".idea/ / .vscode/"),
+            nimcache: labels.contains(&"nimcache/"),
         }
     }
 
@@ -513,6 +530,9 @@ impl GitignoreSet {
             entries.push(".idea/".into());
             entries.push(".vscode/".into());
         }
+        if self.nimcache || langs.nim {
+            entries.push("nimcache/".into());
+        }
 
         entries.sort();
         entries.dedup();
@@ -530,6 +550,13 @@ mod tests {
         assert!(langs.rust);
         assert!(langs.python);
         assert!(!langs.go);
+    }
+
+    #[test]
+    fn test_language_set_nim() {
+        let langs = LanguageSet::from_labels(&["Nim"]);
+        assert!(langs.nim);
+        assert!(!langs.rust);
     }
 
     #[test]

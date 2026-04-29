@@ -27,6 +27,7 @@ impl App {
                 SelectItem::new("Go", "golang"),
                 SelectItem::new("Ruby", "rbenv"),
                 SelectItem::new("Java / JVM", "default-jdk + maven"),
+                SelectItem::new("Nim", "choosenim"),
             ]),
             databases: SelectList::new(vec![
                 SelectItem::new("PostgreSQL", "libpq + psql client"),
@@ -64,6 +65,7 @@ impl App {
                 SelectItem::new(".venv/ / venv/", "Python virtualenvs"),
                 SelectItem::new("__pycache__/ / *.pyc", "Python bytecode"),
                 SelectItem::new(".idea/ / .vscode/", "IDE settings"),
+                SelectItem::new("nimcache/", "Nim compilation cache"),
             ]),
         }
     }
@@ -87,6 +89,7 @@ impl App {
             ("Rust", &["target/"]),
             ("Python", &[".venv/ / venv/", "__pycache__/ / *.pyc"]),
             ("Node.js / Bun", &["node_modules/", "dist/ / build/"]),
+            ("Nim", &["nimcache/"]),
         ];
         for (lang, patterns) in mappings {
             if selected.contains(lang) {
@@ -153,6 +156,14 @@ mod tests {
     }
 
     #[test]
+    fn test_nim_autoselects_nimcache() {
+        let mut app = App::new("test".into());
+        select_language(&mut app, "Nim");
+        app.apply_language_gitignore_defaults();
+        assert!(gitignore_selected(&app, "nimcache/"));
+    }
+
+    #[test]
     fn test_no_languages_leaves_language_specific_items_unselected() {
         let mut app = App::new("test".into());
         app.apply_language_gitignore_defaults();
@@ -160,5 +171,6 @@ mod tests {
         assert!(!gitignore_selected(&app, ".venv/ / venv/"));
         assert!(!gitignore_selected(&app, "__pycache__/ / *.pyc"));
         assert!(!gitignore_selected(&app, "node_modules/"));
+        assert!(!gitignore_selected(&app, "nimcache/"));
     }
 }

@@ -60,6 +60,7 @@ mod tests {
                 ruby: false,
                 java_jvm: false,
                 swift: false,
+                nim: false,
                 ubuntu_version: None,
             },
             databases: DatabaseSet {
