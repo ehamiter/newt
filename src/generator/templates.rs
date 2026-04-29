@@ -116,6 +116,21 @@ pub fn dockerfile(config: &Config) -> String {
         _ => "ubuntu-22.04",
     };
 
+    let nim_install = if config.languages.nim {
+        r#"
+# Nim (arch-aware binary install, works on amd64 and arm64)
+RUN NIM_VER=$(curl -sSf https://nim-lang.org/choosenim/stable) \
+    && ARCH=$(uname -m) \
+    && if [ "$ARCH" = "aarch64" ]; then NIM_ARCH="linux_arm64"; else NIM_ARCH="linux_x64"; fi \
+    && curl -LO "https://nim-lang.org/download/nim-${NIM_VER}-${NIM_ARCH}.tar.xz" \
+    && tar xf "nim-${NIM_VER}-${NIM_ARCH}.tar.xz" \
+    && "nim-${NIM_VER}/install.sh" /usr/local \
+    && rm -rf "nim-${NIM_VER}" "nim-${NIM_VER}-${NIM_ARCH}.tar.xz"
+"#.to_string()
+    } else {
+        String::new()
+    };
+
     format!(
         r#"FROM mcr.microsoft.com/devcontainers/base:{}
 
@@ -124,7 +139,7 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
 {} \
     && rm -rf /var/lib/apt/lists/*{}
-
+{}
 RUN git config --system --add safe.directory /workspace
 
 COPY install-ai-tools.sh /usr/local/bin/
@@ -141,7 +156,7 @@ RUN echo "source /usr/local/bin/devcontainer-bashrc.sh" >> /home/vscode/.bashrc
 USER vscode{}
 "#
         ,
-        ubuntu_img, apt_list, fd_symlink, user_section
+        ubuntu_img, apt_list, fd_symlink, nim_install, user_section
     )
 }
 

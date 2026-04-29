@@ -67,9 +67,6 @@ impl LanguageSet {
         if self.java_jvm {
             packages.extend(["default-jdk", "maven"]);
         }
-        if self.nim {
-            packages.push("nim");
-        }
         if self.swift {
             packages.extend([
                 "binutils-gold",
@@ -162,6 +159,9 @@ impl LanguageSet {
                 "download.swift.org",
                 "github.com",
             ]);
+        }
+        if self.nim {
+            domains.push("nim-lang.org");
         }
         domains.sort_unstable();
         domains.dedup();
