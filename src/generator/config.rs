@@ -67,6 +67,9 @@ impl LanguageSet {
         if self.java_jvm {
             packages.extend(["default-jdk", "maven"]);
         }
+        if self.nim {
+            packages.push("nim");
+        }
         if self.swift {
             packages.extend([
                 "binutils-gold",
@@ -133,13 +136,6 @@ impl LanguageSet {
             });
         }
 
-        if self.nim {
-            installs.push(UserInstall {
-                cmd: "curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y".into(),
-                comment: "Nim via choosenim".into(),
-            });
-        }
-
         installs
     }
 
@@ -164,12 +160,6 @@ impl LanguageSet {
         if self.swift {
             domains.extend([
                 "download.swift.org",
-                "github.com",
-            ]);
-        }
-        if self.nim {
-            domains.extend([
-                "nim-lang.org",
                 "github.com",
             ]);
         }
